@@ -2,17 +2,12 @@ package Philosopher;
 
 import Semaphore.BinarySemaphore;
 
-public class NaivePhilosopher extends Thread
+public class NaivePhilosopher extends AmbidextrousPhilosopher
 {
-	BinarySemaphore left;
-	BinarySemaphore right;
-	String name;
 	
 	public NaivePhilosopher(BinarySemaphore left, BinarySemaphore right, String name)
 	{
-		this.left = left;
-		this.right = right;
-		this.name = name;
+		super(left, right, name);
 	}
 	
 	public void eat()
@@ -34,26 +29,5 @@ public class NaivePhilosopher extends Thread
 		
 	}
 	
-	public void think()
-	{
-		int thinkLength = (int)(Math.random() * 10000);
-		System.out.println(this.name  +" thinking for "+thinkLength+" seconds");
-		try
-		{
-			sleep(thinkLength);
-		}
-		catch(InterruptedException e) {}
-	}
 	
-	public void run()
-	{
-		while(true)
-		{
-			
-			eat();
-			
-			think();
-			
-		}
-	}
 }
