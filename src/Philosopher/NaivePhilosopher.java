@@ -2,13 +2,13 @@ package Philosopher;
 
 import Semaphore.BinarySemaphore;
 
-public class Philosopher extends Thread
+public class NaivePhilosopher extends Thread
 {
 	BinarySemaphore left;
 	BinarySemaphore right;
 	String name;
 	
-	public Philosopher(BinarySemaphore left, BinarySemaphore right, String name)
+	public NaivePhilosopher(BinarySemaphore left, BinarySemaphore right, String name)
 	{
 		this.left = left;
 		this.right = right;
@@ -17,6 +17,10 @@ public class Philosopher extends Thread
 	
 	public void eat()
 	{
+		this.left.acquire();
+		this.right.acquire();
+		
+		
 		int eatLength = (int)(Math.random() * 20000);
 		System.out.println(this.name + " eating for "+eatLength+" seconds");
 		try
@@ -24,6 +28,10 @@ public class Philosopher extends Thread
 			sleep(eatLength);
 		}
 		catch(InterruptedException e) {}
+		
+		this.right.release();
+		this.left.release();
+		
 	}
 	
 	public void think()
@@ -41,13 +49,8 @@ public class Philosopher extends Thread
 	{
 		while(true)
 		{
-			this.left.acquire();
-			this.right.acquire();
 			
 			eat();
-			
-			this.right.release();
-			this.left.release();
 			
 			think();
 			
